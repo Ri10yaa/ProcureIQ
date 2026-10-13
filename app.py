@@ -132,7 +132,7 @@ def main() -> None:
                 template="plotly_white",
             )
             spend_fig.update_layout(height=390, xaxis_title="Month", yaxis_title="Spend")
-            st.plotly_chart(spend_fig, width="stretch")
+            st.plotly_chart(spend_fig, use_container_width=True)
         with right_col:
             volume_fig = px.bar(
                 filtered.groupby("month", as_index=False)["Quantity"].sum(),
@@ -142,7 +142,7 @@ def main() -> None:
                 template="plotly_white",
             )
             volume_fig.update_layout(height=390, xaxis_title="Month", yaxis_title="Units Purchased")
-            st.plotly_chart(volume_fig, width="stretch")
+            st.plotly_chart(volume_fig, use_container_width=True)
 
         left_col, right_col = st.columns(2)
         with left_col:
@@ -156,7 +156,7 @@ def main() -> None:
                 template="plotly_white",
             )
             category_spend_fig.update_layout(height=390, xaxis_title="Spend", yaxis_title="Category")
-            st.plotly_chart(category_spend_fig, width="stretch")
+            st.plotly_chart(category_spend_fig, use_container_width=True)
         with right_col:
             product_volume_fig = px.bar(
                 product_summary.sort_values("total_quantity", ascending=False).head(10),
@@ -167,7 +167,7 @@ def main() -> None:
                 template="plotly_white",
             )
             product_volume_fig.update_layout(height=390, xaxis_title="Product", yaxis_title="Units Purchased")
-            st.plotly_chart(product_volume_fig, width="stretch")
+            st.plotly_chart(product_volume_fig, use_container_width=True)
 
         spend_mix = filtered.groupby(["Supplier", "Item_Category"], as_index=False)["spend_amount"].sum()
         mix_fig = px.bar(
@@ -179,7 +179,7 @@ def main() -> None:
             template="plotly_white",
         )
         mix_fig.update_layout(height=430, xaxis_title="Supplier", yaxis_title="Spend")
-        st.plotly_chart(mix_fig, width="stretch")
+        st.plotly_chart(mix_fig, use_container_width=True)
 
     with tabs[1]:
         left_col, right_col = st.columns(2)
@@ -195,7 +195,7 @@ def main() -> None:
                 template="plotly_white",
             )
             supplier_risk_fig.update_layout(height=410, xaxis_title="On-Time Rate", yaxis_title="Defect Rate")
-            st.plotly_chart(supplier_risk_fig, width="stretch")
+            st.plotly_chart(supplier_risk_fig, use_container_width=True)
         with right_col:
             supplier_spend_fig = px.bar(
                 supplier_summary.sort_values("total_spend", ascending=False),
@@ -206,7 +206,7 @@ def main() -> None:
                 template="plotly_white",
             )
             supplier_spend_fig.update_layout(height=410, xaxis_title="Supplier", yaxis_title="Spend")
-            st.plotly_chart(supplier_spend_fig, width="stretch")
+            st.plotly_chart(supplier_spend_fig, use_container_width=True)
 
         supplier_trend = filtered.groupby(["month", "Supplier"], as_index=False)["spend_amount"].sum()
         supplier_trend_fig = px.line(
@@ -219,7 +219,7 @@ def main() -> None:
             template="plotly_white",
         )
         supplier_trend_fig.update_layout(height=430, xaxis_title="Month", yaxis_title="Spend")
-        st.plotly_chart(supplier_trend_fig, width="stretch")
+        st.plotly_chart(supplier_trend_fig, use_container_width=True)
 
         st.dataframe(
             supplier_summary[[
@@ -235,7 +235,7 @@ def main() -> None:
                 "risk_score",
                 "risk_level",
             ]].sort_values("risk_score", ascending=False),
-            width="stretch",
+            use_container_width=True,
         )
 
     with tabs[2]:
@@ -251,7 +251,7 @@ def main() -> None:
                 template="plotly_white",
             )
             price_fig.update_layout(height=410, xaxis_title="Month", yaxis_title="Average Unit Price")
-            st.plotly_chart(price_fig, width="stretch")
+            st.plotly_chart(price_fig, use_container_width=True)
         with right_col:
             variance_fig = px.box(
                 filtered,
@@ -263,7 +263,7 @@ def main() -> None:
                 template="plotly_white",
             )
             variance_fig.update_layout(height=410, xaxis_title="Category", yaxis_title="Unit Price", showlegend=False)
-            st.plotly_chart(variance_fig, width="stretch")
+            st.plotly_chart(variance_fig, use_container_width=True)
 
         anomaly_fig = px.scatter(
             filtered,
@@ -276,7 +276,7 @@ def main() -> None:
             template="plotly_white",
         )
         anomaly_fig.update_layout(height=430, xaxis_title="Negotiated Price", yaxis_title="Unit Price")
-        st.plotly_chart(anomaly_fig, width="stretch")
+        st.plotly_chart(anomaly_fig, use_container_width=True)
 
         st.dataframe(
             anomaly_records[[
@@ -291,7 +291,7 @@ def main() -> None:
                 "savings_opportunity",
                 "Order_Status",
             ]].head(25),
-            width="stretch",
+            use_container_width=True,
         )
 
     with tabs[3]:
@@ -309,7 +309,7 @@ def main() -> None:
                 template="plotly_white",
             )
             forecast_fig.update_layout(height=410, xaxis_title="Month", yaxis_title="Spend")
-            st.plotly_chart(forecast_fig, width="stretch")
+            st.plotly_chart(forecast_fig, use_container_width=True)
         with right_col:
             quantity_history = filtered.groupby("month", as_index=False)["Quantity"].sum().rename(columns={"Quantity": "forecast_quantity"})
             quantity_forecast_fig = px.line(
@@ -321,7 +321,7 @@ def main() -> None:
                 template="plotly_white",
             )
             quantity_forecast_fig.update_layout(height=410, xaxis_title="Month", yaxis_title="Units")
-            st.plotly_chart(quantity_forecast_fig, width="stretch")
+            st.plotly_chart(quantity_forecast_fig, use_container_width=True)
 
         demand_by_category = filtered.groupby(["month", "Item_Category"], as_index=False)["Quantity"].sum()
         demand_fig = px.area(
@@ -333,7 +333,7 @@ def main() -> None:
             template="plotly_white",
         )
         demand_fig.update_layout(height=430, xaxis_title="Month", yaxis_title="Units Purchased")
-        st.plotly_chart(demand_fig, width="stretch")
+        st.plotly_chart(demand_fig, use_container_width=True)
 
     with tabs[4]:
         top_savings = savings_opportunities.head(15)
@@ -349,7 +349,7 @@ def main() -> None:
                 template="plotly_white",
             )
             savings_fig.update_layout(height=430, xaxis_title="Estimated Savings", yaxis_title="Supplier")
-            st.plotly_chart(savings_fig, width="stretch")
+            st.plotly_chart(savings_fig, use_container_width=True)
         with right_col:
             alt_fig = px.scatter(
                 supplier_category,
@@ -363,7 +363,7 @@ def main() -> None:
                 template="plotly_white",
             )
             alt_fig.update_layout(height=430, xaxis_title="Average Unit Price", yaxis_title="Quantity")
-            st.plotly_chart(alt_fig, width="stretch")
+            st.plotly_chart(alt_fig, use_container_width=True)
 
         st.dataframe(
             savings_opportunities[[
@@ -377,7 +377,7 @@ def main() -> None:
                 "order_count",
                 "anomaly_count",
             ]],
-            width="stretch",
+            use_container_width=True,
         )
 
     with tabs[5]:
